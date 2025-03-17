@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template
-from database.database import db, Room, Booking
+from database.database import db
+from routes import register_routes  # Import the function that registers routes
 
 app = Flask(__name__)
 
@@ -12,8 +13,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
     basedir, "instance", "hotel.db"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SECRET_KEY"] = "your_secret_key"  # Needed for session management
 
 db.init_app(app)
+
+# Register routes from routes.py
+register_routes(app)
 
 
 @app.route("/")
