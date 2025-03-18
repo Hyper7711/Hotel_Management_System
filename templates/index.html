@@ -5,10 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Haven Hotel</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-    <h1>Welcome to Royal Haven Hotel</h1>
-    <p>Your comfort is our priority.</p>
-    <a href="/book">Book a Room</a>
+    <header>
+        <h1>Welcome to Royal Haven Hotel</h1>
+        <p>Your comfort is our priority.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Experience Luxury and Comfort</h2>
+            <p>Book your stay with us and enjoy a relaxing getaway.</p>
+            <a href="/book" class="book-btn">Book a Room</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Royal Haven Hotel. All rights reserved.</p>
+    </footer>
 </body>
 </html>

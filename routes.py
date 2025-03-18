@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for, flash, session
-from database.database import db, User
+from database.database import db, User, Room, Booking
 
 
 def register_routes(app):
@@ -57,3 +57,26 @@ def register_routes(app):
         session.pop("user_id", None)
         flash("Logged out successfully!", "info")
         return redirect(url_for("login"))
+
+    # ✅ New Route for Booking
+    @app.route("/book", methods=["GET", "POST"])
+    def book():
+        if request.method == "POST":
+            room_id = request.form.get("room_id")
+            user_id = session.get("user_id")
+
+            if not user_id:
+                flash("Please log in to book a room!", "warning")
+                return redirect(url_for("login"))
+
+            # Create booking
+            new_booking = Booking(room_id=room_id, user_id=user_id)
+            db.session.add(new_booking)
+            db.session.commit()
+
+            flash("Room booked successfully!", "success")
+            return redirect(url_for("dashboard"))
+
+        # Display available rooms
+        rooms = Room.query.all()
+        return render_template("book.html", rooms=rooms)
