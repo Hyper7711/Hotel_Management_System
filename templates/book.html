@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book a Room - Royal Haven Hotel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <h1>Book a Room</h1>
+    <form method="POST" action="/book">
+        <label for="room">Select Room:</label>
+        <select name="room_id" id="room">
+            {% for room in rooms %}
+            <option value="{{ room.id }}">{{ room.room_type }} - ₹{{ room.price_per_night }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Book Now</button>
+    </form>
+    <a href="/">Back to Home</a>
+</body>
+</html>
+
