@@ -58,7 +58,7 @@ def register_routes(app):
         flash("Logged out successfully!", "info")
         return redirect(url_for("login"))
 
-    # ✅ New Route for Booking
+    # New Route for Booking
     @app.route("/book", methods=["GET", "POST"])
     def book():
         if request.method == "POST":
