@@ -6,7 +6,7 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 
 
-# User Model
+# -------------------- User Model --------------------
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
         return bcrypt.check_password_hash(self.password, password)
 
 
-# Room Model
+# -------------------- Room Model --------------------
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_number = db.Column(db.String(10), unique=True, nullable=False)
@@ -30,11 +30,13 @@ class Room(db.Model):
     availability = db.Column(db.Boolean, default=True)
 
 
-# Booking Model
+# -------------------- Booking Model --------------------
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     customer_name = db.Column(db.String(100), nullable=False)
     room_id = db.Column(db.Integer, db.ForeignKey("room.id"), nullable=False)
     check_in = db.Column(db.DateTime, nullable=False)
     check_out = db.Column(db.DateTime, nullable=False)
+
+    # Relationship to access room details from booking
     room = db.relationship("Room", backref=db.backref("bookings", lazy=True))
