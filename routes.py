@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, session
 from database.database import db, User, Room, Booking
+from datetime import datetime
 
 
 def register_routes(app):
@@ -16,9 +17,9 @@ def register_routes(app):
                 flash("Email already registered!", "danger")
                 return redirect(url_for("register"))
 
-            # Create a new user
+            # Create new user
             new_user = User(name=name, email=email)
-            new_user.set_password(password)  # Hash password before storing
+            new_user.set_password(password)
 
             db.session.add(new_user)
             db.session.commit()
@@ -37,9 +38,9 @@ def register_routes(app):
             user = User.query.filter_by(email=email).first()
 
             if user and user.check_password(password):
-                session["user_id"] = user.id  # Store user in session
+                session["user_id"] = user.id
                 flash("Login successful!", "success")
-                return redirect(url_for("dashboard"))  # Redirect to dashboard
+                return redirect(url_for("dashboard"))
             else:
                 flash("Invalid email or password!", "danger")
 
@@ -58,25 +59,42 @@ def register_routes(app):
         flash("Logged out successfully!", "info")
         return redirect(url_for("login"))
 
-    # New Route for Booking
+    # ✅ Book a Room
     @app.route("/book", methods=["GET", "POST"])
     def book():
         if request.method == "POST":
+            customer_name = request.form.get("customer_name")
             room_id = request.form.get("room_id")
-            user_id = session.get("user_id")
+            check_in = request.form.get("check_in")
+            check_out = request.form.get("check_out")
 
-            if not user_id:
+            if "user_id" not in session:
                 flash("Please log in to book a room!", "warning")
                 return redirect(url_for("login"))
 
-            # Create booking
-            new_booking = Booking(room_id=room_id, user_id=user_id)
+            # Convert string dates to datetime
+            check_in_date = datetime.strptime(check_in, "%Y-%m-%d")
+            check_out_date = datetime.strptime(check_out, "%Y-%m-%d")
+
+            new_booking = Booking(
+                customer_name=customer_name,
+                room_id=room_id,
+                check_in=check_in_date,
+                check_out=check_out_date,
+            )
+
             db.session.add(new_booking)
             db.session.commit()
 
             flash("Room booked successfully!", "success")
             return redirect(url_for("dashboard"))
 
-        # Display available rooms
-        rooms = Room.query.all()
+        rooms = Room.query.filter_by(availability=True).all()
         return render_template("book.html", rooms=rooms)
+
+    # ✅ Admin Dashboard
+    @app.route("/admin")
+    def admin_dashboard():
+        rooms = Room.query.all()
+        bookings = Booking.query.all()
+        return render_template("admin.html", rooms=rooms, bookings=bookings)

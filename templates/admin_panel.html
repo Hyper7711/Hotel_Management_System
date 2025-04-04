@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- agar css ho -->
+</head>
+<body>
+    <h1>Welcome to Admin Panel</h1>
+
+    <!-- Room Table -->
+    <h2>Rooms</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Room Number</th>
+            <th>Type</th>
+            <th>Price</th>
+            <th>Availability</th>
+        </tr>
+        {% for room in rooms %}
+        <tr>
+            <td>{{ room.id }}</td>
+            <td>{{ room.room_number }}</td>
+            <td>{{ room.room_type }}</td>
+            <td>{{ room.price }}</td>
+            <td>{{ 'Yes' if room.availability else 'No' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Add Room Form -->
+    <h2>Add Room</h2>
+    <form method="POST" action="{{ url_for('add_room') }}">
+        <label>Room Number:</label>
+        <input type="text" name="room_number" required><br>
+
+        <label>Room Type:</label>
+        <input type="text" name="room_type" required><br>
+
+        <label>Price:</label>
+        <input type="number" name="price" required><br>
+
+        <label>Available:</label>
+        <select name="availability">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br>
+
+        <input type="submit" value="Add Room">
+    </form>
+
+    <!-- Booking Table -->
+    <h2>Bookings</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Room ID</th>
+            <th>Check-In</th>
+            <th>Check-Out</th>
+        </tr>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{ booking.id }}</td>
+            <td>{{ booking.customer_name }}</td>
+            <td>{{ booking.room_id }}</td>
+            <td>{{ booking.check_in_str }}</td>
+            <td>{{ booking.check_out_str }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{{ url_for('admin_logout') }}">Logout</a>
+</body>
+</html>
