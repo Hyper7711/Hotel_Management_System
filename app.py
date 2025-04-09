@@ -1,28 +1,35 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
-from database.database import db, bcrypt, User, Room, Booking
-
-app = Flask(__name__)
-app.secret_key = "your_secret_key"
-
-# Configuration for SQLAlchemy
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hotel.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# Initialize db and bcrypt
-db.init_app(app)
-bcrypt.init_app(app)
+from sqlalchemy import func
+from database import db, bcrypt, User, Room, Booking
+from flask_migrate import Migrate
 
 
 # -----------------------------------------
-# Home Page
+# App Initialization
+app = Flask(__name__)
+app.secret_key = "supersecretkey"
+
+# -----------------------------------------
+# Configuration
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hotel.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# -----------------------------------------
+# Initialize extensions
+db.init_app(app)
+bcrypt.init_app(app)
+migrate = Migrate(app, db)
+
+# -----------------------------------------
+# Routes
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-# -----------------------------------------
-# Admin Login
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
@@ -43,8 +50,6 @@ def admin_login():
     return render_template("admin_login.html")
 
 
-# -----------------------------------------
-# Admin Panel (Dashboard)
 @app.route("/admin/panel")
 def admin_panel():
     if not session.get("admin_logged_in"):
@@ -52,12 +57,10 @@ def admin_panel():
         return redirect(url_for("admin_login"))
 
     rooms = Room.query.all()
-
-    # Handle bookings with try-except in case datetime fails
     bookings = []
+
     for booking in Booking.query.all():
         try:
-            # This will ensure that datetime values are stringified properly
             booking.check_in_str = (
                 booking.check_in.strftime("%Y-%m-%d %H:%M")
                 if booking.check_in
@@ -76,8 +79,6 @@ def admin_panel():
     return render_template("admin_panel.html", rooms=rooms, bookings=bookings)
 
 
-# -----------------------------------------
-# Add Room (Admin functionality)
 @app.route("/admin/add_room", methods=["POST"])
 def add_room():
     if not session.get("admin_logged_in"):
@@ -102,8 +103,6 @@ def add_room():
     return redirect(url_for("admin_panel"))
 
 
-# -----------------------------------------
-# Admin Logout
 @app.route("/admin/logout")
 def admin_logout():
     session.pop("admin_logged_in", None)
@@ -112,15 +111,109 @@ def admin_logout():
     return redirect(url_for("admin_login"))
 
 
-# -----------------------------------------
-# Book Page (Visible to users)
+# ✅ Book page: Show grouped room types with min-max price
 @app.route("/book")
 def book():
-    rooms = Room.query.filter_by(availability=True).all()
-    return render_template("book.html", rooms=rooms)
+    room_groups = (
+        db.session.query(
+            Room.room_type,
+            db.func.min(Room.price).label("min_price"),
+            db.func.max(Room.price).label("max_price"),
+        )
+        .group_by(Room.room_type)
+        .all()
+    )
+
+    return render_template("book.html", room_groups=room_groups)
+
+
+# ✅ Book room logic: Find any available room of selected type
+@app.route("/book_room", methods=["POST"])
+def book_room():
+    customer_name = request.form["customer_name"]
+    room_type = request.form["room_type"]
+    check_in = datetime.strptime(request.form["check_in"], "%Y-%m-%dT%H:%M")
+    check_out = datetime.strptime(request.form["check_out"], "%Y-%m-%dT%H:%M")
+
+    # Find one available room of that type
+    room = Room.query.filter_by(room_type=room_type, availability=True).first()
+
+    if not room:
+        flash("No available room for selected type.", "danger")
+        return redirect(url_for("book"))
+
+    new_booking = Booking(
+        customer_name=customer_name,
+        room_id=room.id,
+        check_in=check_in,
+        check_out=check_out,
+    )
+
+    room.availability = False
+    db.session.add(new_booking)
+    db.session.commit()
+
+    flash(f"{room.room_type} Room booked successfully!", "success")
+    return redirect(url_for("index"))
 
 
 # -----------------------------------------
 # Main
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+
+        # Create default admin
+        admin_email = "admin@hotel.com"
+        if not User.query.filter_by(email=admin_email).first():
+            admin_user = User(name="Admin", email=admin_email, role="admin")
+            admin_user.set_password("admin123")
+            db.session.add(admin_user)
+            print("[+] Admin user created")
+
+        # Add sample rooms if empty
+        if Room.query.count() == 0:
+            sample_rooms = [
+                Room(
+                    room_number="Deluxe-1",
+                    room_type="Deluxe",
+                    price=4000,
+                    availability=True,
+                ),
+                Room(
+                    room_number="Double-1",
+                    room_type="Double",
+                    price=2500,
+                    availability=True,
+                ),
+                Room(
+                    room_number="Single-1",
+                    room_type="Single",
+                    price=1500,
+                    availability=True,
+                ),
+                Room(
+                    room_number="Suite-1",
+                    room_type="Suite",
+                    price=6000,
+                    availability=True,
+                ),
+                Room(
+                    room_number="Regular-1",
+                    room_type="Regular",
+                    price=1200,
+                    availability=True,
+                ),
+                Room(
+                    room_number="Regular-2",
+                    room_type="Regular",
+                    price=800,
+                    availability=True,
+                ),
+            ]
+            db.session.bulk_save_objects(sample_rooms)
+            print("[+] Sample rooms added")
+
+        db.session.commit()
+
     app.run(debug=True)
