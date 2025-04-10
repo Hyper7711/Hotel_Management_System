@@ -11,13 +11,11 @@ def register_routes(app):
             email = request.form.get("email")
             password = request.form.get("password")
 
-            # Check if email already exists
             existing_user = User.query.filter_by(email=email).first()
             if existing_user:
                 flash("Email already registered!", "danger")
                 return redirect(url_for("register"))
 
-            # Create new user
             new_user = User(name=name, email=email)
             new_user.set_password(password)
 
@@ -62,17 +60,16 @@ def register_routes(app):
     # ✅ Book a Room
     @app.route("/book", methods=["GET", "POST"])
     def book():
+        if "user_id" not in session:
+            flash("Please log in to book a room!", "warning")
+            return redirect(url_for("login"))
+
         if request.method == "POST":
             customer_name = request.form.get("customer_name")
             room_id = request.form.get("room_id")
             check_in = request.form.get("check_in")
             check_out = request.form.get("check_out")
 
-            if "user_id" not in session:
-                flash("Please log in to book a room!", "warning")
-                return redirect(url_for("login"))
-
-            # Convert string dates to datetime
             check_in_date = datetime.strptime(check_in, "%Y-%m-%d")
             check_out_date = datetime.strptime(check_out, "%Y-%m-%d")
 
