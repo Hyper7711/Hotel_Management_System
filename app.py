@@ -4,7 +4,6 @@ from sqlalchemy import func
 from database import db, bcrypt, User, Room, Booking
 from flask_migrate import Migrate
 
-
 # -----------------------------------------
 # App Initialization
 app = Flask(__name__)
@@ -111,7 +110,6 @@ def admin_logout():
     return redirect(url_for("admin_login"))
 
 
-# ✅ Book page: Show grouped room types with min-max price
 @app.route("/book")
 def book():
     room_groups = (
@@ -127,7 +125,6 @@ def book():
     return render_template("book.html", room_groups=room_groups)
 
 
-# ✅ Book room logic: Find any available room of selected type
 @app.route("/book_room", methods=["POST"])
 def book_room():
     customer_name = request.form["customer_name"]
@@ -135,7 +132,6 @@ def book_room():
     check_in = datetime.strptime(request.form["check_in"], "%Y-%m-%dT%H:%M")
     check_out = datetime.strptime(request.form["check_out"], "%Y-%m-%dT%H:%M")
 
-    # Find one available room of that type
     room = Room.query.filter_by(room_type=room_type, availability=True).first()
 
     if not room:
@@ -156,6 +152,12 @@ def book_room():
     flash(f"{room.room_type} Room booked successfully!", "success")
     return redirect(url_for("index"))
 
+
+# -----------------------------------------
+# Register user blueprint
+from auth import auth
+
+app.register_blueprint(auth)
 
 # -----------------------------------------
 # Main
