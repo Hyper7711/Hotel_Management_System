@@ -9,7 +9,7 @@ bcrypt = Bcrypt()
 # -------------------- User Model --------------------
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     role = db.Column(db.String(50), nullable=False, default="customer")
@@ -38,5 +38,4 @@ class Booking(db.Model):
     check_in = db.Column(db.DateTime, nullable=False)
     check_out = db.Column(db.DateTime, nullable=False)
 
-    # Relationship to access room details from booking
     room = db.relationship("Room", backref=db.backref("bookings", lazy=True))
