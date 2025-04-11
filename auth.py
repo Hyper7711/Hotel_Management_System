@@ -9,17 +9,17 @@ auth = Blueprint("auth", __name__, url_prefix="/user")
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        name = request.form["name"]
+        username = request.form["username"]
         email = request.form["email"]
         password = request.form["password"]
 
-        existing_user = User.query.filter_by(email=email).first()
+        existing_user = User.query.filter_by(username=username).first()
 
         if existing_user:
-            flash("Email already registered!", "danger")
+            flash("Username already taken!", "danger")
             return redirect(url_for("auth.register"))
 
-        new_user = User(name=name, email=email, role="user")
+        new_user = User(username=username, email=email, role="user")
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
@@ -35,25 +35,23 @@ def register():
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request.form.get("email")
+        password = request.form.get("password")
 
-        user = User.query.filter_by(email=email, role="user").first()
+        user = User.query.filter_by(email=email).first()
 
         if user and user.check_password(password):
-            session["user_logged_in"] = True
-            session["user_name"] = user.name
+            session["user_id"] = user.id
             flash("Login successful!", "success")
-            return redirect(url_for("auth.dashboard"))
+            return redirect(url_for("book_room"))
         else:
             flash("Invalid email or password!", "danger")
-            return redirect(url_for("auth.login"))
 
     return render_template("login.html")
 
 
 # -----------------------------------------
-# Dashboard
+# Dashboard (optional)
 @auth.route("/dashboard")
 def dashboard():
     if not session.get("user_logged_in"):

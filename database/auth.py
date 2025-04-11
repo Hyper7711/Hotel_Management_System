@@ -18,7 +18,7 @@ def register():
             flash("⚠️ Email already registered!", "warning")
             return redirect(url_for("auth.register"))
 
-        new_user = User(name=name, email=email)
+        new_user = User(username=name, email=email)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
@@ -33,17 +33,17 @@ def register():
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request.form.get("email")
+        password = request.form.get("password")
 
         user = User.query.filter_by(email=email).first()
-        if user and user.check_password(password):
-            login_user(user)
-            flash("✅ Logged in successfully!", "success")
-            return redirect(url_for("dashboard"))
 
-        flash("❌ Invalid credentials!", "danger")
-        return redirect(url_for("auth.login"))
+        if user and user.check_password(password):
+            session["user_id"] = user.id
+            flash("Login successful!", "success")
+            return redirect(url_for("book_room"))  # ✅ Fixed here
+        else:
+            flash("Invalid email or password!", "danger")
 
     return render_template("login.html")
 

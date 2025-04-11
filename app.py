@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
 from sqlalchemy import func
-from database import db, bcrypt, User, Room, Booking
 from flask_migrate import Migrate
+from database import db, bcrypt, User, Room, Booking
 
 # -----------------------------------------
 # App Initialization
@@ -13,6 +13,11 @@ app.secret_key = "supersecretkey"
 # Configuration
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hotel.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# -----------------------------------------
+# Import extensions and models
+from database import db, bcrypt
+from database.database import User, Room, Booking
 
 # -----------------------------------------
 # Initialize extensions
@@ -168,7 +173,7 @@ if __name__ == "__main__":
         # Create default admin
         admin_email = "admin@hotel.com"
         if not User.query.filter_by(email=admin_email).first():
-            admin_user = User(name="Admin", email=admin_email, role="admin")
+            admin_user = User(username="Admin", email=admin_email, role="admin")
             admin_user.set_password("admin123")
             db.session.add(admin_user)
             print("[+] Admin user created")
