@@ -13,7 +13,7 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
 
-        existing_user = User.query.filter_by(username=username).first()
+        existing_user = User.query.filter_by(email=email).first()
 
         if existing_user:
             flash("Username already taken!", "danger")
