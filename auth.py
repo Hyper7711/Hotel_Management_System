@@ -43,7 +43,7 @@ def login():
         if user and user.check_password(password):
             session["user_id"] = user.id
             flash("Login successful!", "success")
-            return redirect(url_for("book_room"))
+            return redirect(url_for("book"))
         else:
             flash("Invalid email or password!", "danger")
 
