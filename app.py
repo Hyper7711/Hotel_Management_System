@@ -160,7 +160,7 @@ def book_room():
 
 # -----------------------------------------
 # Register user blueprint
-from auth import auth
+from database.auth import auth
 
 app.register_blueprint(auth)
 
