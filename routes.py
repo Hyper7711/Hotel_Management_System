@@ -43,7 +43,7 @@ def logout():
 
 
 # ✅ Book a Room Route
-@app.route("/book", methods=["GET", "POST"])
+@app.route("/book_rook", methods=["GET", "POST"])
 def book():
     if "user_id" not in session:
         flash("Please log in to book a room!", "warning")
