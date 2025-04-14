@@ -18,7 +18,7 @@ def register():
             flash("⚠️ Email already registered!", "warning")
             return redirect(url_for("auth.register"))
 
-        new_user = User(username=name, email=email)
+        new_user = User(username=name, email=email, role="user")  # 👈 Added role="user"
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
@@ -40,12 +40,21 @@ def login():
 
         if user and user.check_password(password):
             session["user_id"] = user.id
-            flash("Login successful!", "success")
-            return redirect(url_for("book_room"))  # ✅ Fixed here
+            session["user_logged_in"] = True
+            session["user_name"] = user.username
+            flash("✅ Login successful!", "success")
+            return redirect(url_for("book_room"))  # 👈 Redirect to booking route
         else:
-            flash("Invalid email or password!", "danger")
+            flash("❌ Invalid email or password!", "danger")
 
     return render_template("login.html")
+
+
+# ------------------ Dashboard Route ------------------
+@auth.route("/dashboard")
+@login_required
+def dashboard():
+    return render_template("dashboard.html", username=session.get("user_name"))
 
 
 # ------------------ Logout Route ------------------
@@ -53,5 +62,6 @@ def login():
 @login_required
 def logout():
     logout_user()
+    session.clear()
     flash("👋 Logged out successfully!", "info")
     return redirect(url_for("auth.login"))
