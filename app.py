@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from datetime import datetime
 from sqlalchemy import func
 from flask_migrate import Migrate
-from database import db, bcrypt, User, Room, Booking
+from flask_login import LoginManager, login_required, current_user
+from database import db, bcrypt
+from database.database import User, Room, Booking
 
 # -----------------------------------------
 # App Initialization
@@ -15,15 +17,22 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hotel.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # -----------------------------------------
-# Import extensions and models
-from database import db, bcrypt
-from database.database import User, Room, Booking
-
-# -----------------------------------------
 # Initialize extensions
 db.init_app(app)
 bcrypt.init_app(app)
 migrate = Migrate(app, db)
+
+# -----------------------------------------
+# Flask-Login Setup
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "auth.login"  # Use your auth blueprint's login route
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 
 # -----------------------------------------
 # Routes
