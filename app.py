@@ -5,11 +5,17 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_required, current_user
 from database import db, bcrypt
 from database.database import User, Room, Booking
+from auth import auth
+
 
 # -----------------------------------------
 # App Initialization
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
+
+# -----------------------------------------
+# Register user blueprint
+app.register_blueprint(auth)
 
 # -----------------------------------------
 # Configuration
@@ -166,12 +172,6 @@ def book_room():
     flash(f"{room.room_type} Room booked successfully!", "success")
     return redirect(url_for("index"))
 
-
-# -----------------------------------------
-# Register user blueprint
-from database.auth import auth
-
-app.register_blueprint(auth)
 
 # -----------------------------------------
 # Main

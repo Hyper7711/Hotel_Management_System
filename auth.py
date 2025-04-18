@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request,
 from flask_login import login_user, logout_user, login_required, current_user
 from database.database import db, User
 
-# Create a single blueprint with a consistent prefix
+# Create blueprint
 auth = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -39,22 +39,20 @@ def register():
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        # Get form data
         email = request.form.get("email")
         password = request.form.get("password")
 
-        # Authenticate user
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
-            # Set up both session and flask-login
             login_user(user)
             session["user_id"] = user.id
             session["user_logged_in"] = True
             session["user_name"] = user.username
 
             flash("✅ Login successful!", "success")
-            # Redirect to main booking page
-            return redirect(url_for("book_room"))
+            return redirect(
+                url_for("book")
+            )  # change this if your booking route is under a blueprint
         else:
             flash("❌ Invalid email or password!", "danger")
 
@@ -65,7 +63,6 @@ def login():
 @auth.route("/dashboard")
 @login_required
 def dashboard():
-    """User dashboard accessible only to logged-in users."""
     return render_template("dashboard.html", username=current_user.username)
 
 
@@ -73,10 +70,7 @@ def dashboard():
 @auth.route("/logout")
 @login_required
 def logout():
-    # Properly log out with flask-login
     logout_user()
-    # Also clear session data
     session.clear()
-
     flash("👋 Logged out successfully!", "info")
     return redirect(url_for("auth.login"))
