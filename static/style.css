@@ -9,3 +9,24 @@ h1 {
     text-align: center;
     color: #333;
 }
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e;
+    border-color: #333;
+}
+
+.dark-mode .navbar,
+.dark-mode footer {
+    background-color: #000;
+}
+
+.dark-mode .btn-dark {
+    background-color: #333;
+    border: none;
+}
