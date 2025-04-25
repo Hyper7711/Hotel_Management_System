@@ -199,23 +199,21 @@
   </nav>
 
 <!-- Hero Carousel Start -->
-<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
   <div class="carousel-inner">
-    <div class="carousel-item active position-relative">
+    <div class="carousel-item active">
       <img src="{{ url_for('static', filename='images/suite.png') }}" class="d-block w-100" alt="Luxury">
 
-      <!-- Centered Caption -->
-      <div class="carousel-caption d-flex flex-column justify-content-center align-items-center text-center top-0 bottom-0 start-0 end-0 bg-dark bg-opacity-50">
-        <h1 class="display-4 fw-bold text-white animate__animated animate__fadeInDown">Royal Haven Hotel</h1>
-        <p class="lead text-light animate__animated animate__fadeInUp">Affordable Comfort to Luxurious Elegance</p>
+      <!-- Caption with Animate.css effects -->
+      <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded animate__animated animate__fadeIn">
+        <h1 class="text-white animate__animated animate__fadeInDown">Welcome to Royal Haven</h1>
+        <p class="animate__animated animate__fadeInUp">Affordable Comfort to Luxurious Elegance</p>
 
         {% if session.get('user_logged_in') %}
-          <a href="{{ url_for('book') }}" class="btn btn-primary mt-3">Book a Room</a>
+          <a href="{{ url_for('book') }}" class="btn btn-primary mt-3 animate__animated animate__zoomIn">Book a Room</a>
         {% else %}
-          <div class="mt-3">
-            <a href="{{ url_for('auth.register') }}" class="btn btn-success me-2">Register Now</a>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light">Login</a>
-          </div>
+          <a href="{{ url_for('auth.register') }}" class="btn btn-success mt-3 me-2 animate__animated animate__zoomIn">Register Now</a>
+          <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light mt-3 animate__animated animate__zoomIn">Login</a>
         {% endif %}
       </div>
     </div>
