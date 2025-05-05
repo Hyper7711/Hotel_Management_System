@@ -5,60 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Royal Haven Hotel</title>
 
-  <!-- Bootstrap 5 CDN -->
+  <!-- Bootstrap & CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Animate.css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-  <!-- AOS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-    }
-
+    body { font-family: 'Poppins', sans-serif; }
     .card:hover {
       transform: scale(1.03);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       transition: all 0.3s ease;
     }
-
     .floating-book-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
       z-index: 999;
     }
-
-    /* New Navigation Bar Styles */
     .custom-navbar {
       background-color: #0f0f1a;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       padding: 15px 0;
       position: relative;
     }
-
-    .navbar-logo {
-      color: #e6c78b;
-      font-size: 22px;
-      font-weight: 700;
-    }
-
+    .navbar-logo { color: #e6c78b; font-size: 22px; font-weight: 700; }
     .navbar-center {
       position: absolute;
       left: 50%;
@@ -66,21 +42,18 @@
       text-align: center;
       z-index: 1;
     }
-
     .navbar-center .hotel-name {
       font-size: 28px;
       font-weight: 700;
       margin: 0;
       color: #e6c78b;
     }
-
     .navbar-center .tagline {
       font-size: 14px;
       color: #bbb;
       margin-top: 5px;
       font-style: italic;
     }
-
     .custom-nav-link {
       color: #f0f0f0 !important;
       position: relative;
@@ -88,11 +61,9 @@
       font-weight: 500;
       transition: color 0.3s;
     }
-
     .custom-nav-link:hover {
       color: #e6c78b !important;
     }
-
     .custom-nav-link::after {
       content: '';
       position: absolute;
@@ -103,29 +74,23 @@
       background-color: #e6c78b;
       transition: width 0.3s;
     }
-
     .custom-nav-link:hover::after {
       width: 100%;
     }
-
     .admin-btn {
       border: 1px solid #e6c78b;
       color: #e6c78b !important;
       transition: all 0.3s;
     }
-
     .admin-btn:hover {
       background-color: #e6c78b;
       color: #0f0f1a !important;
     }
-
-    /* Social icons for contact section */
     .social-icons {
       display: flex;
       gap: 15px;
       margin-top: 15px;
     }
-
     .social-icons a {
       display: inline-flex;
       align-items: center;
@@ -137,14 +102,11 @@
       color: #fff;
       transition: all 0.3s ease;
     }
-
     .social-icons a:hover {
       background-color: #e6c78b;
       color: #0f0f1a;
       transform: translateY(-3px);
     }
-
-    /* Responsive adjustments */
     @media (max-width: 992px) {
       .navbar-center {
         position: relative;
@@ -158,28 +120,21 @@
 </head>
 <body>
 
-  <!-- Enhanced Navbar -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg custom-navbar">
     <div class="container-fluid">
       <a class="navbar-brand navbar-logo" href="/">RH</a>
-
-      <!-- Centered Hotel Name (visible on desktop) -->
       <div class="navbar-center d-none d-lg-block">
         <h1 class="hotel-name">Royal Haven Hotel</h1>
         <div class="tagline">Luxury Beyond Expectations</div>
       </div>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <!-- Centered Hotel Name (visible on mobile) -->
       <div class="navbar-center d-lg-none">
         <h1 class="hotel-name">Royal Haven Hotel</h1>
         <div class="tagline">Luxury Beyond Expectations</div>
       </div>
-
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link custom-nav-link active" href="{{ url_for('index') }}">Home</a></li>
@@ -198,87 +153,121 @@
     </div>
   </nav>
 
-<!-- Hero Carousel Start -->
-<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="{{ url_for('static', filename='images/suite.png') }}" class="d-block w-100" alt="Luxury">
-
-      <!-- Caption with Animate.css effects -->
-      <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded animate__animated animate__fadeIn">
-        <h1 class="text-white animate__animated animate__fadeInDown">Welcome to Royal Haven</h1>
-        <p class="animate__animated animate__fadeInUp">Affordable Comfort to Luxurious Elegance</p>
-
-        {% if session.get('user_logged_in') %}
-          <a href="{{ url_for('book') }}" class="btn btn-primary mt-3 animate__animated animate__zoomIn">Book a Room</a>
-        {% else %}
-          <a href="{{ url_for('auth.register') }}" class="btn btn-success mt-3 me-2 animate__animated animate__zoomIn">Register Now</a>
-          <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light mt-3 animate__animated animate__zoomIn">Login</a>
-        {% endif %}
+  <!-- Hero Section -->
+  <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{{ url_for('static', filename='images/suite.png') }}" class="d-block w-100" alt="Luxury">
+        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded animate__animated animate__fadeIn">
+          <h1 class="text-white animate__animated animate__fadeInDown">Welcome to Royal Haven</h1>
+          <p class="animate__animated animate__fadeInUp">Affordable Comfort to Luxurious Elegance</p>
+          {% if session.get('user_logged_in') %}
+            <a href="{{ url_for('book') }}" class="btn btn-primary mt-3 animate__animated animate__zoomIn">Book a Room</a>
+          {% else %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-success mt-3 me-2 animate__animated animate__zoomIn">Register Now</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light mt-3 animate__animated animate__zoomIn">Login</a>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- Room Types -->
-  <section class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4 fw-bold">Room Types</h2>
-      <div class="row g-4 justify-content-center">
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4 fw-bold">Room Types</h2>
+    <div class="row g-4 justify-content-center">
 
-        <!-- Budget Room -->
-        <div class="col-6 col-md-4 col-lg-2">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ url_for('static', filename='images/budget.png') }}" class="card-img-top" alt="Budget Rooms">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-0">Budget Room</h6>
-            </div>
+      <!-- Budget Room -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ url_for('static', filename='images/budget.png') }}" class="card-img-top" alt="Budget Room">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-2">Budget Room</h6>
+            <p class="text-muted small mb-2">Perfect for solo travelers or students. Compact, cozy and cost-effective.</p>
+            <ul class="list-unstyled text-muted small">
+              <li>✔️ Single Bed</li>
+              <li>✔️ Free Wi-Fi</li>
+              <li>✔️ Attached Bathroom</li>
+              <li>✔️ Fan & Basic Lighting</li>
+            </ul>
           </div>
         </div>
-
-        <!-- Deluxe Room -->
-        <div class="col-6 col-md-4 col-lg-2">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ url_for('static', filename='images/deluxe.png') }}" class="card-img-top" alt="Deluxe Rooms">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-0">Deluxe Room</h6>
-            </div>
-          </div>
-        </div>
-
-        <!-- Executive Room -->
-        <div class="col-6 col-md-4 col-lg-2">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ url_for('static', filename='images/executive.png') }}" class="card-img-top" alt="Executive Rooms">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-0">Executive Room</h6>
-            </div>
-          </div>
-        </div>
-
-        <!-- Standard Room -->
-        <div class="col-6 col-md-4 col-lg-2">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ url_for('static', filename='images/standard.png') }}" class="card-img-top" alt="Standard Rooms">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-0">Standard Room</h6>
-            </div>
-          </div>
-        </div>
-
-        <!-- Suite Room -->
-        <div class="col-6 col-md-4 col-lg-2">
-          <div class="card h-100 shadow-sm">
-            <img src="{{ url_for('static', filename='images/suite.png') }}" class="card-img-top" alt="Suite Rooms">
-            <div class="card-body text-center">
-              <h6 class="card-title mb-0">Suite Room</h6>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      <!-- Deluxe Room -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ url_for('static', filename='images/deluxe.png') }}" class="card-img-top" alt="Deluxe Room">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-2">Deluxe Room</h6>
+            <p class="text-muted small mb-2">Designed for relaxation with extra space and stylish decor.</p>
+            <ul class="list-unstyled text-muted small">
+              <li>✔️ Queen Size Bed</li>
+              <li>✔️ Air Conditioning</li>
+              <li>✔️ Smart TV & Mini Fridge</li>
+              <li>✔️ Room Service Access</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Executive Room -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ url_for('static', filename='images/executive.png') }}" class="card-img-top" alt="Executive Room">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-2">Executive Room</h6>
+            <p class="text-muted small mb-2">For business professionals who want comfort and a work-ready space.</p>
+            <ul class="list-unstyled text-muted small">
+              <li>✔️ King Bed</li>
+              <li>✔️ Work Desk & Chair</li>
+              <li>✔️ Daily Newspaper</li>
+              <li>✔️ Priority Check-in</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Standard Room -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ url_for('static', filename='images/standard.png') }}" class="card-img-top" alt="Standard Room">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-2">Standard Room</h6>
+            <p class="text-muted small mb-2">Great for short family stays or couples wanting comfort & privacy.</p>
+            <ul class="list-unstyled text-muted small">
+              <li>✔️ Double Bed</li>
+              <li>✔️ Air Conditioning</li>
+              <li>✔️ 24/7 Room Service</li>
+              <li>✔️ Closet & Mirror</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suite Room -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ url_for('static', filename='images/suite.png') }}" class="card-img-top" alt="Suite Room">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-2">Suite Room</h6>
+            <p class="text-muted small mb-2">The ultimate luxury experience for guests who want it all.</p>
+            <ul class="list-unstyled text-muted small">
+              <li>✔️ King Bed & Living Area</li>
+              <li>✔️ Bathtub & Private Balcony</li>
+              <li>✔️ In-Room Dining</li>
+              <li>✔️ Complimentary Breakfast</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
+
+
 
   <!-- Testimonials -->
   <section class="bg-light py-5">
@@ -297,7 +286,6 @@
     </div>
   </section>
 
-  <!-- Floating Book Button -->
   {% if session.get('user_logged_in') %}
     <a href="{{ url_for('book') }}" class="btn btn-danger rounded-circle floating-book-btn">
       <i class="fa-solid fa-bed"></i>
@@ -305,61 +293,46 @@
   {% endif %}
 
   <!-- Contact Section -->
-<section class="py-5 bg-white" id="contact">
-  <div class="container">
-    <h2 class="text-center fw-bold mb-4" data-aos="fade-up">📞 Contact Us</h2>
-    <div class="row justify-content-center">
-      <div class="col-md-6" data-aos="fade-right">
-        <form>
-          <div class="mb-3">
-            <label for="name" class="form-label">Your Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+  <section class="py-5 bg-white" id="contact">
+    <div class="container">
+      <h2 class="text-center fw-bold mb-4" data-aos="fade-up">📞 Contact Us</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-6" data-aos="fade-right">
+          <form>
+            <div class="mb-3"><label class="form-label">Your Name</label><input type="text" class="form-control"></div>
+            <div class="mb-3"><label class="form-label">Email address</label><input type="email" class="form-control"></div>
+            <div class="mb-3"><label class="form-label">Message</label><textarea class="form-control" rows="4"></textarea></div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+        <div class="col-md-5" data-aos="fade-left">
+          <h5 class="mt-4 mt-md-0">📍 Address</h5>
+          <p>Sharada Colony, Wad Chowk,<br>Amalner - 425401, Maharashtra</p>
+          <h5>📞 Phone</h5>
+          <p><a href="tel:+918010409757" class="text-decoration-none text-dark">+91 8010409757</a></p>
+          <h5>📧 Email</h5>
+          <p><a href="mailto:shindeyash054@gmail.com" class="text-decoration-none text-dark">shindeyash054@gmail.com</a></p>
+          <h5>🌐 Connect With Us</h5>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
           </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter your email">
-          </div>
-          <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea class="form-control" id="message" rows="4" placeholder="Write your message"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
-        </form>
-      </div>
-
-      <div class="col-md-5" data-aos="fade-left">
-        <h5 class="mt-4 mt-md-0">📍 Address</h5>
-        <p>Sharada Colony, Wad Chowk,<br>Amalner - 425401, Maharashtra</p>
-
-        <h5>📞 Phone</h5>
-        <p><a href="tel:+918010409757" class="text-decoration-none text-dark">+91 8010409757</a></p>
-
-        <h5>📧 Email</h5>
-        <p><a href="mailto:shindeyash054@gmail.com" class="text-decoration-none text-dark">shindeyash054@gmail.com</a></p>
-
-        <h5>🌐 Connect With Us</h5>
-        <div class="social-icons">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-  <!-- Footer -->
   <footer class="bg-dark text-white text-center py-3 mt-auto">
     <p class="mb-0">&copy; 2025 Royal Haven Hotel. All rights reserved.</p>
   </footer>
 
-  <!-- Scripts -->
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
+  <script>AOS.init();</script>
 </body>
 </html>
+
 
 
