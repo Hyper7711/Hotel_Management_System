@@ -202,13 +202,13 @@ if __name__ == "__main__":
         # Add sample rooms if empty
         if Room.query.count() == 0:
             sample_rooms = [
-                Room(room_number="Deluxe-1", room_type="Deluxe", price=4000, availability=True),
-                Room(room_number="Double-1", room_type="Double", price=2500, availability=True),
-                Room(room_number="Single-1", room_type="Single", price=1500, availability=True),
-                Room(room_number="Suite-1", room_type="Suite", price=6000, availability=True),
-                Room(room_number="Regular-1", room_type="Regular", price=1200, availability=True),
-                Room(room_number="Regular-2", room_type="Regular", price=800, availability=True),
-            ]
+                Room(room_number="BUD-101", room_type="Budget", price=1000, availability=True),
+                Room(room_number="DEL-201", room_type="Deluxe", price=2500, availability=True),
+                Room(room_number="EXE-301", room_type="Executive", price=3500, availability=True),
+                Room(room_number="STD-401", room_type="Standard", price=2000, availability=True),
+                Room(room_number="SUI-501", room_type="Suite", price=6000, availability=True),
+]
+
             db.session.bulk_save_objects(sample_rooms)
             print("[+] Sample rooms added")
 
