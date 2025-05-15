@@ -12,8 +12,8 @@ from auth import auth
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
-# -----------------------------------------
-# Register user blueprint
+# ------------------------------------------
+# Register user blueprints
 app.register_blueprint(auth)
 
 # -----------------------------------------
