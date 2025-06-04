@@ -2,7 +2,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from .database import db, bcrypt, User, Room, Booking
 
-migrate = Migrate()  # Yeh line add kar
+migrate = Migrate()
 
 
 def create_app():
