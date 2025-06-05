@@ -3,8 +3,6 @@ from database.database import db, User, Room, Booking
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"  # Change this to a secure key
-
 
 # ✅ Login Route
 @app.route("/login", methods=["GET", "POST"])
